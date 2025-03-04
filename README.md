@@ -1,4 +1,4 @@
-# Web Radio Streaming Setup Guide
+# Web Radio Setup Guide
 
 This is an overview of the streaming infrastructure design for an internet radio station using Docker, Caddy, Icecast2, and Liquidsoap.
 
