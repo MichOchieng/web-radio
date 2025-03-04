@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  icecast:
+    image: moul/icecast
+    container_name: radio-icecast
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./logs/icecast:/var/log/icecast2
+    environment:
+      - ICECAST_SOURCE_PASSWORD=hackme
+      - ICECAST_ADMIN_PASSWORD=hackme
+      - ICECAST_RELAY_PASSWORD=hackme
+      - ICECAST_HOSTNAME=example.ca
+    networks:
+      - radio-network
+  
+  liquidsoap:
+    image: savonet/liquidsoap:v2.1.4
+    container_name: radio-liquidsoap
+    restart: unless-stopped
+    depends_on:
+      - icecast
+    volumes:
+      - ./config/radio.liq:/radio.liq
+      - ./backup_music:/backup_music
+    ports:
+      - "8010:8010"
+    command: /radio.liq
+    networks:
+      - radio-network
+  caddy:
+    image: caddy:2.6
+    container_name: radio-caddy
+    restart: unless-stopped
+    depends_on:
+      - icecast
+      - liquidsoap
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./config/CaddyFile:/etc/caddy/CaddyFile
+      - ./data/caddy:/data
+    environment:
+      - CADDY_HOST=<your-host>
+    networks:
+      - radio-network
+
+networks:
+  radio-network:
+    driver: bridge
