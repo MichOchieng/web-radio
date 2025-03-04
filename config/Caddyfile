@@ -1,0 +1,42 @@
+{
+    # Lets Encrypt email notifications
+    email your@email.com
+}
+
+<your-domain-here> {
+    handle / {
+        reverse_proxy icecast:8000/live.mp3 {
+            header_up Host {https.request.host}
+            header_up X-Real-IP {remote_host}
+            header_up X-Forwarded-For {remote_host}
+            header_up X-Forwared-Proto {scheme}
+            header_up Access-Control-Allow-Origin *
+        }
+    }
+
+    handle /mp3 {
+        reverse_proxy icecast:8000/live.mp3 {
+            header_up Host {https.request.host}
+            header_up X-Real-IP {remote_host}
+            header_up X-Forwarded-For {remote_host}
+            header_up X-Forwared-Proto {scheme}
+            header_up Access-Control-Allow-Origin *
+        }  
+    }
+
+    handle /aac {
+        reverse_proxy icecast:8000/stream.aac {
+            header_up Host {https.request.host}
+            header_up X-Real-IP {remote_host}
+            header_up X-Forwarded-For {remote_host}
+            header_up X-Forwared-Proto {scheme}
+            header_up Access-Control-Allow-Origin *
+        }
+    }
+
+    handle /admin* {
+        @denied not remote_ip <your-ip-range>
+        redir @denied / permanent
+        reverse_proxy icecast:8000/admin/stats.xsl
+    }
+}
