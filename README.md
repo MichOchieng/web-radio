@@ -21,6 +21,28 @@ The system consists of the following components:
 
 ![Stream Architecture Diagram](/public/stream.png)
 
+## Quick Start
+
+### Clone or download the configuration files
+
+```bash
+git clone https://github.com/MichOchieng/web-radio.git
+cd web-radio
+```
+
+### Add backup music
+
+```bash
+cp /path/to/your/music/*.mp3 ./backup_music/
+```
+
+### Start the server
+
+```bash
+docker compose up -d
+```
+Your streaming server is now running 🎉
+
 ## Docker Configuration
 
 The setup leverages Docker Compose to orchestrate the services:
@@ -94,6 +116,18 @@ Caddy serves as the frontend for listeners and handles:
 - Icecast provides a status page for monitoring active listeners
 - Logs are stored in mounted volumes for persistence
 - Container health can be monitored via Docker
+
+### Check server status
+
+```bash
+docker compose ps
+```
+
+### View logs
+
+```bash
+docker compose logs
+```
 
 ## Stream Client Configuration
 
