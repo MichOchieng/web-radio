@@ -26,6 +26,17 @@ services:
     volumes:
       - ./config/radio.liq:/radio.liq
       - ./backup_music:/backup_music
+    environment:
+      - ICECAST_HOST=hackme
+      - ICECAST_PORT=8000
+      - ICECAST_PASSWORD=hackme
+      - HARBOR_PASSWORD=hackme
+      - HARBOR_USER=user
+      - HARBOR_PORT=8010
+      - STATION_DESCRIPTION="My Station"
+      - STATION_URL=example.ca
+      - STATION_NAME=myStation
+      - BACKUP_DIR=./backup_music
     ports:
       - "8010:8010"
     command: /radio.liq
